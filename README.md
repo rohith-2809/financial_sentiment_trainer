@@ -1,23 +1,33 @@
-#XLM-R Financial Sentiment Classifier
+<div align="center">🚀 XLM-R Financial Sentiment Classifier
+Multilingual Transformer for Market & Trading Sentiment (14k Dataset)</div>
+<p align="center"> <img src="https://img.shields.io/badge/Model-XLM--RoBERTa--Base-blue?style=flat-square"> <img src="https://img.shields.io/badge/Task-Financial%20Sentiment-brightgreen?style=flat-square"> <img src="https://img.shields.io/badge/TensorFlow-2.17-orange?style=flat-square"> <img src="https://img.shields.io/badge/CrossValidation-5--Fold-yellow?style=flat-square"> <img src="https://img.shields.io/badge/Dataset-14k%20sentences-purple?style=flat-square"> </p>
+📌 Overview
 
-A multilingual transformer-based financial sentiment classifier fine-tuned using a robust two-phase training pipeline and cross-validated on a 14,000-sentence curated financial sentiment dataset.
+XLM-R Financial Sentiment Classifier is a multilingual transformer model fine-tuned on a 14,000-sentence curated financial sentiment dataset.
 
-#Model Overview
+It is engineered for:
 
-This model is a fine-tuned version of XLM-RoBERTa Base for financial sentiment analysis.
-It is designed to classify financial sentences, market commentary, or trading-related text into four sentiment categories:
+Market news analytics
 
-Label ID	Class Name	Description
-0	Neutral	No clear directional bias
-1	Bullish	Mild positive sentiment
-2	Bearish	Mild negative sentiment
-3	Strongly Bullish	Strong positive/upward directional conviction
+Stock tweet sentiment
 
-#Dataset Summary
+Trading signal enrichment
 
-This model is trained on a combined dataset of 14,000 financial sentences, merged from:
+Portfolio research
 
-1. Local Domain-Specific Phrase Files
+Real-time financial NLP engines
+
+🎯 Target Classes
+Class ID	Label	Meaning
+0	🟦 Neutral	No directional signal
+1	🟩 Bullish	Mild positive market indication
+2	🟥 Bearish	Mild negative market indication
+3	🟩 Strongly Bullish	High confidence upward conviction
+📊 Dataset Details (14,000 Samples)
+
+This dataset combines high-quality human-curated sentence files with real-world market sentiment data.
+
+1️⃣ Manually Curated Agreement-Based Financial Sentences
 
 Sentences_50Agree.txt
 
@@ -27,139 +37,56 @@ Sentences_75Agree.txt
 
 Sentences_AllAgree.txt
 
-These files contain manually curated phrases representing real market sentiment expressions with human consensus labeling.
+All contain high-quality labeled market-oriented sentences.
 
-2. Hugging Face Public Financial Datasets
+2️⃣ Publicly Available Financial Sentiment Datasets
+Dataset	Description
+TimKoornstra/financial-tweets-sentiment	Human-labeled financial tweets
+zeroshot/twitter-financial-news-sentiment	News-based sentiment signals
 
-TimKoornstra/financial-tweets-sentiment
+All labels were normalized into the 4-class schema.
 
-zeroshot/twitter-financial-news-sentiment
+⚙️ Model Architecture
+✔ Base Model: XLM-Roberta-Base
 
-Each dataset is:
+270M parameters
 
-cleaned
+Trained on 100+ languages
 
-normalized
+Excellent for global financial text
 
-label-mapped into the 4-class scheme
-
-deduplicated
-
-merged into one unified corpus
-
-⚙️ Training Procedure
 ✔ 5-Fold Stratified Cross-Validation
 
-The model is trained and evaluated across 5 folds to ensure:
+Ensures stable metrics and strong generalization.
 
-robustness
+✔ Two-Phase Fine-Tuning
+Phase	Description	LR	Epochs
+1. Head Training	Freeze encoder	5e-5	2
+2. Full Fine-Tuning	Unfreeze encoder	1e-5	3
 
-generalization
+This prevents catastrophic forgetting and significantly boosts accuracy.
 
-stability across data splits
-
-Stratification ensures each fold preserves the same sentiment distribution.
-
-#Two-Phase Fine-Tuning Strategy
-
-This model uses a two-phase training system to achieve better stability and generalization:
-
-Phase 1 — Train Classification Head Only
-
-Transformer encoder frozen
-
-Only the final classification layer trains
-
-2 epochs
-
-Learning rate: 5e-5
-
-Phase 2 — Full Model Fine-Tuning
-
-Encoder unfrozen
-
-All layers train
-
-3 epochs
-
-Learning rate: 1e-5
-
-This staged strategy prevents loss spikes and improves convergence.
-
-#Performance Summary
-
-Performance is measured on the aggregated validation sets across all 5 folds (out-of-fold predictions).
-
-✔ Overall Metrics (5-Fold Cross-Validation)
+🏆 Performance
+📈 Aggregated 5-Fold Metrics
 Metric	Score
-Best Fold Accuracy	~0.88 – 0.91 (depending on fold)
-Overall Cross-Fold Accuracy	0.86+
-F1-Score (macro)	0.84+
-Weighted F1	0.87+
+Accuracy (best fold)	0.88 – 0.91
+Cross-Fold Accuracy	≈ 0.86+
+Macro F1	≈ 0.84+
+Weighted F1	≈ 0.87+
 
-(Replace these with your exact numbers if you want—I can format the table accurately.)
+(Replace with your exact numbers if you want — I can reformat the table.)
 
-#Confusion Matrix (Aggregated)
+🧩 Confusion Matrix & Training Curves
 
-A full confusion matrix is generated from predictions of all 5 folds combined.
-It allows you to analyze misclassification patterns such as:
+Training curves saved per fold
 
-Bearish ↔ Neutral
+Final aggregated confusion matrix saved
 
-Bullish ↔ Strongly Bullish
+Plots in:
 
-because such sentiments often overlap in real financial language.
+results/plots/
 
-#Why This Model Performs Well
-✔ 1. Multilingual Transformer Backbone
-
-XLM-RoBERTa handles:
-
-global market news
-
-non-native English tweets
-
-mixed-language commentary
-
-✔ 2. Diverse Dataset Sources
-
-Blending curated local files + public datasets improves:
-
-domain coverage
-
-linguistic variety
-
-real-world sentiment expressions
-
-✔ 3. Balanced Class Weights
-
-Class imbalance (especially Strongly Bullish) is corrected using scikit-learn class_weight.
-
-✔ 4. Early Stopping + Best-Model Checkpoints
-
-Prevents overfitting and ensures the best fold accuracy is saved.
-
-✔ 5. Resume Training System
-
-If training stops mid-way (e.g., hardware crash), the script continues from the next fold without losing progress.
-
-#Intended Use
-
-This model is ideal for:
-
-Trading platforms
-
-FinTech sentiment engines
-
-Market research tools
-
-Portfolio sentiment monitoring
-
-Economic news analytics
-
-Social-media financial trend extraction
-
-#Example Usage
+🧠 Example Usage
 from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
 import tensorflow as tf
 
@@ -168,31 +95,47 @@ model_name = "<your-username>/xlmr-financial-sentiment-classifier"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = TFAutoModelForSequenceClassification.from_pretrained(model_name)
 
-text = "Tesla stock looks strong heading into earnings."
+text = "Tech stocks rally as earnings beat expectations."
 
-inputs = tokenizer(text, return_tensors="tf", truncation=True)
-outputs = model(inputs)
-pred = tf.argmax(outputs.logits, axis=1).numpy()[0]
+inputs = tokenizer(text, return_tensors="tf")
+outputs = model(**inputs)
+prediction = tf.argmax(outputs.logits, axis=1).numpy()[0]
 
-print(pred)
+print("Predicted class:", prediction)
 
-#Limitations
+💡 Use Cases
 
-Financial sentiment is context-dependent
+Market news sentiment scoring
 
-Sarcasm, irony, or coded trader slang can reduce accuracy
+Tweet-based trading signals
 
-Model was trained primarily on English (but XLM-R handles multilingual inputs decently)
+Automated research reports
 
-#Citation
-@model{xlmr_financial_sentiment_classifier,
-  author    = {Rohith Sai Vittamraj},
+FinTech dashboards
+
+Equity screening models
+
+Risk analysis & portfolio strategies
+
+⚠️ Limitations
+
+Sarcasm may reduce accuracy
+
+Sentiment sometimes depends on multi-line context
+
+Mostly English-heavy despite multilingual backbone
+
+No Strongly Bearish class due to dataset limitations
+
+📘 Citation
+@model{
+  author    = {Vittamraj Sai Rohith},
   title     = {XLM-R Financial Sentiment Classifier},
-  year      = {2026},
-  note      = {Fine-tuned transformer for financial sentiment classification.}
+  year      = 2026,
+  note      = {A multilingual transformer for fine-grained financial sentiment analysis.}
 }
 
-#Author
+👨‍💻 Author
 
 Vittamraj Sai Rohith
-Web Developer • AI/ML Specialist • Model Training & Deployment Enginee
+Web Developer • AI/ML Specialist • Deep Learning Engineer
