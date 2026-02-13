@@ -59,6 +59,7 @@ import seaborn as sns
 from tf_keras.callbacks import EarlyStopping, ModelCheckpoint
 from tf_keras.optimizers import Adam
 
+# implmented early Stopping
 # === Setup Logging ===
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
