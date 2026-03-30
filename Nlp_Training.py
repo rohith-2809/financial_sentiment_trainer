@@ -4,7 +4,7 @@
 # using XLM-RoBERTa with the following steps:
 #
 # 1) DATA LOADING:
-#    - Loads 4 local text files with fixed sentiment labels. 
+#    - Loads 4 local text files with fixed sentiment labels.
 #    - Loads multiple HuggingFace datasets and normalizes their labels.
 #    - Combines all sources into a single cleaned dataset.
 #
