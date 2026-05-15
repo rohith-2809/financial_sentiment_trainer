@@ -16,7 +16,7 @@
 #
 # 4) CLASS WEIGHTING:
 #    - Automatically computes balanced class weights to fix class imbalance.
-# 
+#
 # 5) TWO-PHASE TRAINING:
 #    Phase 1: Train only the classification head (encoder frozen).
 #    Phase 2: Fine-tune the full transformer model (encoder unfrozen).
