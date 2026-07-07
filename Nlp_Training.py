@@ -44,7 +44,6 @@
 #    - Cleans temporary checkpoints and state file after successful run.
 
 
-
 import os
 import pandas as pd
 import numpy as np
